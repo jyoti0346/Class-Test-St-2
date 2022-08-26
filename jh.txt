@@ -1,0 +1,110 @@
+Jyoti(2010990346)
+set 2
+
+1)#include <bits/stdc++.h>
+using namespace std;
+
+long mean(vector<long> grades){
+    return accumulate(begin(grades), end(grades), (long)0)/grades.size();
+}
+
+long median(vector<long> grades, int size){
+    sort(begin(grades), end(grades));
+    
+    if(size % 2 != 0){
+        return grades[size/2];
+    }
+    
+    int a = size/2;
+    int b = a + 1;
+    
+    return (grades[a] + grades[b])/2; 
+}
+
+pair<vector<string>, int> mode(vector<string> names, vector<long> grades){
+    unordered_map<int, int> freq;
+    
+    for(int i=0; i<grades.size(); i++)
+        freq[grades[i]]++;
+    
+    int key, val = 0;
+    for(auto& p: freq){
+        if(p.second > val)
+            key = p.first;
+    }
+    
+    pair<vector<string>, int> ans;
+    vector<string> studentsWithMode;
+    for(int i=0; i<grades.size(); i++){
+        if(grades[i] == freq[key])
+            studentsWithMode.push_back(names[i]);
+    }
+    
+    return ans;
+}
+
+int main()
+{
+    vector<string> names;
+    vector<long> grades;
+    
+    int size;
+    cin>>size;
+    
+    string name;
+    int grade;
+    
+    for(int i=0; i<size; i++){
+        cin>>name>>grade;
+        names.push_back(name);
+        grades.push_back(grade);
+    }
+    
+    cout<<"mean: "<<mean(grades)<<endl;
+    cout<<"median: "<<median(grades, size)<<endl;
+    
+    pair<vector<string>, int> p = mode(names, grades);
+    cout<<"mode: "<<p.second<<endl<<"students with the mode ";
+    for(int i=0; p.first.size(); i++){
+        cout<<p.first[i]<<" ";
+    }
+        
+    return 0;
+}
+
+2)#include <bits/stdc++.h>
+using namespace std;
+
+bool cmp(pair<int, int> a, pair<int, int> b){
+    return a.second == b.second ? a.first < b.first : a.second < b.second;
+}
+
+vector<pair<int, int>> sortmap(unordered_map<int, int>& mp){
+    vector<pair<int, int>> v;
+    
+    for(auto& p: mp)
+        v.push_back(p);
+        
+    sort(begin(v), end(v), cmp);
+    return v;
+}
+
+int main()
+{
+    unordered_map<int, int> mp;
+    
+    int size;
+    cin>>size;
+    int a, b;
+    for(int i=0; i<size; i++){
+        cin>>a>>b;
+        mp[a] = b;
+    }
+    
+    vector<pair<int, int>> result = sortmap(mp);
+    for(auto& x: result){
+        cout<<x.first<<" "<<x.second<<endl;
+    }
+    
+    return 0;
+}
